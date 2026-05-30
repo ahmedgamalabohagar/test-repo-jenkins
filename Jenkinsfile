@@ -4,7 +4,7 @@ pipeline {
     agent any
 
     environment {
-        REGISTRY      = 'docker.io'
+        REGISTRY      = 'index.docker.io/v1/'
         REGISTRY_CRED = 'dockerhub-cred'
         IMAGE_NAME    = 'ahmedabohagar/my-app'
         IMAGE_TAG     = "1.0.${BUILD_NUMBER}"
