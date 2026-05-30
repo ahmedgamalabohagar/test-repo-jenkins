@@ -1,9 +1,11 @@
+def dockerImage = ''
+
 pipeline {
     agent any
 
     environment {
         REGISTRY      = 'docker.io'
-        REGISTRY_CRED = 'ahmed-dockerhub'
+        REGISTRY_CRED = 'dockerhub-cred'
         IMAGE_NAME    = 'ahmedabohagar/my-app'
         IMAGE_TAG     = "1.0.${BUILD_NUMBER}"
     }
@@ -21,6 +23,7 @@ pipeline {
             steps {
                 script {
                     echo "Building Docker image ${IMAGE_NAME}:${IMAGE_TAG}"
+                    // شيلنا كلمة def من هنا لأننا عرفناها فوق خالص
                     dockerImage = docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
                 }
             }
@@ -41,7 +44,7 @@ pipeline {
         stage('Push Image') {
             steps {
                 script {
-                    docker.withRegistry("https://${REGISTRY}", REGISTRY_CRED) {
+                    docker.withRegistry("https://${REGISTRY}", "${REGISTRY_CRED}") {
                         // push with build number tag
                         dockerImage.push("${IMAGE_TAG}")
                         // push as latest
